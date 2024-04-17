@@ -1,73 +1,58 @@
 package project;
 import org.SuryaKN.*;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 
-import javax.swing.*;
+import static org.junit.Assert.*;
+
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-import static org.mockito.Mockito.*;
-
-@RunWith(MockitoJUnitRunner.class)
 public class MyActionListenerTest {
-
-    @Mock
-    JButton mockButton;
-
-    @Mock
-    JComboBox mockComboBox;
 
     @Test
     public void testActionPerformedForButtonNew() {
         MyActionListener listener = new MyActionListener();
-        when(mockButton.getActionCommand()).thenReturn("+NEW");
-
-        ActionEvent mockEvent = mock(ActionEvent.class);
-        when(mockEvent.getSource()).thenReturn(mockButton);
-
+        ActionEventMock mockEvent = new ActionEventMock(new JButton("+NEW"));
         try {
             listener.actionPerformed(mockEvent);
         } catch (Exception e) {
             fail("Unexpected exception thrown: " + e.getMessage());
         }
+        // Add assertions based on the behavior you expect
     }
 
     @Test
     public void testActionPerformedForButtonSummary() throws SQLException {
         MyActionListener listener = new MyActionListener();
-        when(mockButton.getActionCommand()).thenReturn("Summary");
-
-        ActionEvent mockEvent = mock(ActionEvent.class);
-        when(mockEvent.getSource()).thenReturn(mockButton);
-
-        String[] categories = {"Category1", "Category2"};
-        Mockito.when(ExpenseDB.getCategories()).thenReturn(categories);
-        Mockito.when(ExpenseDB.totalExpenses(anyString())).thenReturn(100.0); // Corrected
-
+        ActionEventMock mockEvent = new ActionEventMock(new JButton("Summary"));
         try {
             listener.actionPerformed(mockEvent);
         } catch (Exception e) {
             fail("Unexpected exception thrown: " + e.getMessage());
         }
+        // Add assertions based on the behavior you expect
     }
 
     @Test
     public void testActionPerformedForComboBox() throws SQLException {
         MyActionListener listener = new MyActionListener();
-
-        ActionEvent mockEvent = mock(ActionEvent.class);
-        when(mockEvent.getSource()).thenReturn(mockComboBox);
-
+        ActionEventMock mockEvent = new ActionEventMock(new JComboBox<>());
         try {
             listener.actionPerformed(mockEvent);
         } catch (Exception e) {
             fail("Unexpected exception thrown: " + e.getMessage());
         }
+        // Add assertions based on the behavior you expect
+    }
+
+    // Custom ActionEventMock class to mock ActionEvent
+    private static class ActionEventMock extends ActionEvent {
+    	private static final long serialVersionUID = 1L;
+
+        public ActionEventMock(Object source) {
+            super(source, ActionEvent.ACTION_PERFORMED, null);
+        }
     }
 }
-
