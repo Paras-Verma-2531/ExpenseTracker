@@ -1,22 +1,22 @@
 package org.SuryaKN;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class MyActionListener implements ActionListener {
+
+public class MyActionListener extends Component implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-        
-        if (source instanceof JButton) {
-            JButton button = (JButton) source;
-            if (button.getActionCommand().equals("+NEW")) {
+        if (e.getSource() instanceof JButton) {
+            if (e.getActionCommand().equals("+NEW")) {
                 new NewExpense();
             }
 
-            if (button.getActionCommand().equals("Summary")) {
+            if (e.getActionCommand().equals("Summary")) {
+//                System.out.println(ExpenseDB.totalExpenses());
                 String[] rs = ExpenseDB.getCategories();
                 StringBuilder summary = new StringBuilder();
                 summary.append("Summary:\n\n");
@@ -25,12 +25,12 @@ public class MyActionListener implements ActionListener {
                     summary.append(s).append(" : ").append(ExpenseDB.totalExpenses(s)).append("\n");
                 }
 
-                JOptionPane.showMessageDialog(null, summary.toString(), "Expense Summary", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, summary.toString(), "Expense Summary", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
-        if (source instanceof JComboBox) {
-            JComboBox<?> comboBox = (JComboBox<?>) source;
+        if (e.getSource() instanceof JComboBox) {
+//            System.out.println("pressed!" + ((JComboBox<?>) e.getSource()).getSelectedItem());
+
             try {
                 HomeWindow.updateTable();
             } catch (SQLException exception) {
