@@ -1,5 +1,6 @@
 package org.SuryaKN;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -143,15 +144,33 @@ public class ExpenseDB {
     public static String totalExpenses(String sort) {
         String selectSQL;
         try {
-            if (sort.equals("All")) {
+            if ("All".equals(sort)) {
                 selectSQL = "SELECT SUM(\"Amount\") FROM \"expenses\"";
-                return "Total Expenses : " + stat.executeQuery(selectSQL).getString(1);
+                ResultSet resultSet = stat.executeQuery(selectSQL);
+                if (resultSet.next()) {
+                    return "Total Expenses : " + resultSet.getString(1);
+                } else {
+                    return "No expenses found.";
+                }
             } else {
-                selectSQL = "SELECT SUM(\"Amount\") FROM \"expenses\" WHERE Category LIKE '" + sort + "'";
-                return stat.executeQuery(selectSQL).getString(1);
+                selectSQL = "SELECT SUM(\"Amount\") FROM \"expenses\" WHERE Category LIKE ?";
+                PreparedStatement preparedStatement = ConnectDB.connect().prepareStatement(selectSQL);
+                preparedStatement.setString(1, sort);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    String totalAmount = resultSet.getString(1);
+                    if (totalAmount != null) {
+                        return sort + " Expenses : " + totalAmount;
+                    } else {
+                        return "No expenses found for category: " + sort;
+                    }
+                } else {
+                    return "No expenses found for category: " + sort;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 }
