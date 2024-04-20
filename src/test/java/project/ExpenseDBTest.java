@@ -10,6 +10,12 @@ import java.sql.SQLException;
 
 public class ExpenseDBTest {
 
+	 @BeforeClass
+	    public static void setUpClass() {
+	        // Mock static method call for HomeWindow.getSort()
+	        mockStatic(HomeWindow.class);
+	        when(HomeWindow.getSort()).thenReturn("All");
+	    }
     @Test
     public void testGetALL() {
         try {
