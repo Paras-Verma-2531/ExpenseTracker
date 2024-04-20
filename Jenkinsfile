@@ -11,13 +11,13 @@ pipeline {
         stage('Compile') {
             steps {
                 // Compile the Java code
-                sh '.\mvnw.cmd compile'
+                sh './mvnw.cmd compile'
             }
         }
         stage('Unit Test') {
             steps {
                 // Run unit tests
-                sh '.\mvnw.cmd test'
+                sh './mvnw.cmd test'
             }
             post {
                 // Archive the test results
@@ -29,7 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Clean and package the project
-                sh '.\mvnw.cmd clean package'
+                sh './mvnw.cmd clean package'
             }
         }
     }
