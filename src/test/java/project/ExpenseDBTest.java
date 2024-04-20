@@ -80,11 +80,16 @@ public class ExpenseDBTest {
     }
 
     @Test
-    public void testTotalExpensesWithSort() {
+    public void testTotalExpensesWithSort() throws SQLException {
         // Mock static method call
-		mockStatic(HomeWindow.class);
+        mockStatic(HomeWindow.class);
 
-		// You may need to replace the argument with appropriate value for your test
-		assertNotNull(ExpenseDB.totalExpenses("Housing"));
+        // You may need to replace the argument with appropriate value for your test
+        String result = ExpenseDB.totalExpenses("Housing");
+
+        // Modify the assertion to expect a specific result when there are no expenses for the category
+        assertEquals("No expenses found for category: Housing", result);
     }
+
+
 }
