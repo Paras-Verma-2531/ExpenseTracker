@@ -10,30 +10,22 @@ import java.sql.SQLException;
 
 public class ExpenseDBTest {
 
-    @Test
-    public void testGetALL() {
-        try {
-            // Mock static method call
-            mockStatic(HomeWindow.class);
-            when(HomeWindow.getSort()).thenReturn("All");
-
-            assertNotNull(ExpenseDB.getALL());
-        } catch (SQLException e) {
-            fail("SQLException occurred: " + e.getMessage());
-        }
+    @Before
+    public void setUp() {
+        // Mock static method call for HomeWindow.getSort()
+        mockStatic(HomeWindow.class);
     }
 
     @Test
-    public void testGetColumns() {
-        try {
-            // Mock static method call
-            mockStatic(HomeWindow.class);
-            when(HomeWindow.getSort()).thenReturn("All");
+    public void testGetALL() throws SQLException {
+        when(HomeWindow.getSort()).thenReturn("All");
+        assertNotNull(ExpenseDB.getALL());
+    }
 
-            assertNotNull(ExpenseDB.getColumns());
-        } catch (SQLException e) {
-            fail("SQLException occurred: " + e.getMessage());
-        }
+    @Test
+    public void testGetColumns() throws SQLException {
+        when(HomeWindow.getSort()).thenReturn("All");
+        assertNotNull(ExpenseDB.getColumns());
     }
 
     @Test
@@ -52,44 +44,29 @@ public class ExpenseDBTest {
     }
 
     @Test
-    public void testTotalExpenses() {
-        // Mock static method call
-		mockStatic(HomeWindow.class);
-		when(HomeWindow.getSort()).thenReturn("All");
-
-		assertNotNull(ExpenseDB.totalExpenses());
+    public void testTotalExpenses() throws SQLException {
+        when(HomeWindow.getSort()).thenReturn("All");
+        assertNotNull(ExpenseDB.totalExpenses());
     }
 
     @Test
-    public void testTotalMonthlyExpenses() {
-        // Mock static method call
-		mockStatic(HomeWindow.class);
-		when(HomeWindow.getSort()).thenReturn("All");
-
-		assertNotNull(ExpenseDB.totalMonthlyExpenses());
+    public void testTotalMonthlyExpenses() throws SQLException {
+        when(HomeWindow.getSort()).thenReturn("All");
+        assertNotNull(ExpenseDB.totalMonthlyExpenses());
     }
 
     @Test
-    public void testTotalExpensesFromDateToDate() {
-        // Mock static method call
-		mockStatic(HomeWindow.class);
-		when(HomeWindow.getSort()).thenReturn("All");
-
-		// You may need to replace the arguments with appropriate values for your test
-		assertNotNull(ExpenseDB.totalExpenses("2024-01-01", "2024-04-20"));
+    public void testTotalExpensesFromDateToDate() throws SQLException {
+        // You may need to replace the arguments with appropriate values for your test
+        assertNotNull(ExpenseDB.totalExpenses("2024-01-01", "2024-04-20"));
     }
 
     @Test
-    public void testTotalExpensesWithSort() throws SQLException {
-        // Mock static method call
-        mockStatic(HomeWindow.class);
-
+    public void testTotalExpensesWithSort() {
         // You may need to replace the argument with appropriate value for your test
         String result = ExpenseDB.totalExpenses("Housing");
 
         // Modify the assertion to expect a specific result when there are no expenses for the category
         assertEquals("No expenses found for category: Housing", result);
     }
-
-
 }
